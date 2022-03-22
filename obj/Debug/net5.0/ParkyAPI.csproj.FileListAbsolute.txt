@@ -64,3 +64,6 @@ C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\Microsoft.Extensi
 C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\ParkyAPI.xml
+C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Versioning.dll
+C:\Users\muham\source\repos\ParkyAPI\ParkyAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll

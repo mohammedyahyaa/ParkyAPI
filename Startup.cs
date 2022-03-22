@@ -17,6 +17,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ParkyAPI.ParkyMapper;
+using System.Reflection;
+using System.IO;
 
 namespace ParkyAPI
 {
@@ -32,17 +34,57 @@ namespace ParkyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkyAPI", Version = "v1" });
+                c.SwaggerDoc("ParkyOpenAPISpecNP", new OpenApiInfo
+                {
+                    Title = "Parky API (National Park)",
+                    Version = "1",
+                    Description = "ParkyAPI NP",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                    {
+                        Email = "muhamedyahya97@gmail.com",
+                        Name = "Mohamed Yahya",
+                        Url = new Uri("https://www.linkedin.com/in/mohamed-yahya97/")
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                    }
+                });
+                c.SwaggerDoc("ParkyOpenAPISpecTrails", new OpenApiInfo
+                {
+                    Title = "ParkyAPI Trails",
+                    Version = "1",
+                    Description = "ParkyAPI Trails",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                    {
+                        Email = "muhamedyahya97@gmail.com",
+                        Name = "Mohamed Yahya",
+                        Url = new Uri("https://www.linkedin.com/in/mohamed-yahya97/")
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                    }
+                });
+
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                c.IncludeXmlComments(cmlCommentsFullPath);
+
             });
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<INationalParkRepository, NationalParkRepository>();
+            services.AddScoped<ITrailRepository, TrailRepository>();
             services.AddAutoMapper(typeof(ParkyMappings));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +94,13 @@ namespace ParkyAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkyAPI v1"));
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/ParkyOpenAPISpecNP/swagger.json", "ParkyAPI NP");
+                    c.SwaggerEndpoint("/swagger/ParkyOpenAPISpecTrails/swagger.json", "ParkyAPI Trails");
+                    //c.RoutePrefix = "";
+                });
             }
 
             app.UseHttpsRedirection();
@@ -60,6 +108,7 @@ namespace ParkyAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
